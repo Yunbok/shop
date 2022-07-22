@@ -7,11 +7,14 @@ import com.shop.entity.ItemImg;
 import com.shop.repository.ItemImgRepository;
 import com.shop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +67,22 @@ public class ItemService {
         return item.getId();
     }
 
+    public Long updateItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
+
+        //상품 수정
+        Item item = itemRepository.findById(itemFormDto.getId())
+                .orElseThrow(EntityNotFoundException::new);
+        item.updateItem(itemFormDto);
+
+        List<Long> itemImgIds = itemFormDto.getItemImgIds();
+
+        //이미지 등록
+        for (int i = 0; i < itemImgFileList.size(); i++) {
+            itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));
+        }
+
+        return item.getId();
+    }
 
 }
 
