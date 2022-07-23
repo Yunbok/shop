@@ -1,22 +1,47 @@
 package com.shop.service;
 
+import com.shop.constant.Role;
 import com.shop.entity.Member;
 import com.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+
+
+    @PostConstruct
+    public void init() {
+        Member member = new Member();
+
+
+        member.setName("배윤복");
+        member.setEmail("admin@admin.com");
+        member.setAddress("admin");
+        member.setPassword("$2a$10$TkYtDH67lesKaRSJZvqPW.gPWmwwKLEWg4PgIbiJqW1K4q7ayryoG");
+        member.setRole(Role.ADMIN);
+
+        try {
+            saveMember(member);
+
+        } catch (IllegalStateException e) {
+            log.info(e.getMessage());
+        }
+    }
 
     public Member saveMember(Member member) {
         validateDuplicateMember(member);

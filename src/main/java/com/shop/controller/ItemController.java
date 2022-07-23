@@ -55,7 +55,7 @@ public class ItemController {
 
         try {
             ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
-            model.addAttribute("itemFromDto", itemFormDto);
+            model.addAttribute("itemFormDto", itemFormDto);
 
         } catch (EntityNotFoundException e) {
             model.addAttribute("errorMessage", "존재하지 않는 상품 입니다.");
