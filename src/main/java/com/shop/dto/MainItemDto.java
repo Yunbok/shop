@@ -24,5 +24,8 @@ public class MainItemDto {
         this.id = id;
         this.itemNm = itemNm;
         this.itemDetail = itemDetail;
+        this.imgUrl = imgUrl;
+        this.price = price;
+
     }
 }
