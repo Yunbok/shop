@@ -64,5 +64,12 @@ public class Order {
         return totalPrice;
     }
 
+    public void cancelOrder() {
+        this.orderStatus = orderStatus.CANCEL;
+
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+        }
+    }
 
 }
